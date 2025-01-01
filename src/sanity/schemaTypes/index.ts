@@ -1,6 +1,6 @@
 import { type SchemaTypeDefinition } from 'sanity'
-import { studentSchema } from '@/sanity/schemaTypes/studentSchma'
+import { postSchema } from './post'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
-  types: [studentSchema],
+  types: [postSchema],
 }
