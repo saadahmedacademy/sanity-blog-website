@@ -41,5 +41,12 @@ export const postSchema = defineType({
       of: [defineArrayMember({ type: 'block' })],
       validation: (Rule) => Rule.required().error('Content is required'),
     }),
+    defineField({
+      title: 'Post Author',
+      name: 'author',
+      type: 'reference',
+      to: [{ type: 'author' }],
+      validation: (Rule) => Rule.required().error('Author is required'),
+    })
   ],
 });
