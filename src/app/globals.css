@@ -20,6 +20,11 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
+body::-webkit-scrollbar  {
+  width: 0px;
+  background-color: transparent;
+}
+
 @layer utilities {
   .text-balance {
     text-wrap: balance;

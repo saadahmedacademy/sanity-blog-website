@@ -7,7 +7,7 @@ export const components:PortableTextComponents = {
     },
 
     listItem:{
-        bullet:({children})=><li className='list-disc marker:text-accentDarkSecondary list-inside ml-4'>{children}</li>
+        bullet:({children})=><li className='list-disc marker:text-accentDarkSecondary list-inside ml-4 py-2'>{children}</li>
     },
 
     marks:{

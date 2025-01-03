@@ -7,12 +7,12 @@ export default function BlogCard({post}:{post:Post}) {
   return (
     <section className="flex flex-col justify-between h-[480px] rounded bg-light/90 dark:bg-dark/40 shadow-md shadow-gray-300 dark:shadow-black/80 group hover:scale-105 transition-transform ease-out duration-700">
       {/* Image Section*/}
-      <div className="relative max-h-76 flex-1">
+      <div className="relative max-h-[19rem] flex-1">
         <Image
           src={`${urlFor(post.image)}`}
-          alt="AI for everyone"
+          alt={post.title}
           fill
-          className="object-cover rounded-t"
+          className="w-full h-full rounded-t"
         />
       </div>
 
