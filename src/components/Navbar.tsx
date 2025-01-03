@@ -1,66 +1,109 @@
-'use client';
-import Image from 'next/image';
-import React from 'react';
+"use client";
+
+import React, { useRef } from "react";
+import gsap from "gsap";
 import { IoSearchSharp, IoPerson } from "react-icons/io5";
 import { CiHeart } from "react-icons/ci";
-import { FaCartShopping } from "react-icons/fa6";
+import { FaHome, FaWindowClose } from "react-icons/fa";
 import { CgMenuRightAlt } from "react-icons/cg";
-import gsap from 'gsap';
-import Link from 'next/link';
-import { FaWindowClose } from "react-icons/fa";
+import Link from "next/link";
+import { FaCartShopping } from "react-icons/fa6";
+import { SiYoutubestudio } from "react-icons/si";
+import { BsBrightnessHighFill } from "react-icons/bs";
 
 export const Navbar = () => {
+  const menuDivRef = useRef<HTMLDivElement | null>(null);
+
+  const handleMenuOpen = () => {
+    gsap.to(menuDivRef.current, { display: "flex", right: "0", duration: 0.5 });
+    gsap.to(".navLink", {
+      x: 0,
+      opacity: 1,
+      stagger: 0.2,
+      duration: 0.5,
+      delay: 0.2,
+    });
+  };
+
+  const handleMenuClose = () => {
+    gsap.to(menuDivRef.current, {
+      right: "-100%",
+      duration: 0.5,
+      display: "none",
+    });
+    gsap.to(".navLink", { x: 100, opacity: 0, duration: 0.5 });
+  };
 
   return (
     <>
-      <header className="min-w-full h-[115px] bg-[#A29875] flex justify-evenly items-center ">
-        <h1 className="text-[#FFFFFF] pb-1 " style={{ borderBottom: "2px double #FFFFFF" }}>
-          DailyTechTougts
+      <header className="min-w-full h-[115px] bg-blue-600 flex justify-evenly items-center">
+        <h1
+          className="font-sans text-3xl text-[#FFFFFF] pb-1"
+          style={{ borderBottom: "3px double yellow" }}
+        >
+          DailyTechThoughts
         </h1>
 
-        <div className="relative lg:block hidden">
-          <input
-            type="text"
-            placeholder="Search for Gold Jewellery, Diamond Jewellery and more…"
-            className="rounded-lg w-[550px] h-[45px] px-2 font-[Nunito Sans] text-[#6C757D] "
-          />
-          <IoSearchSharp className="absolute right-3 top-[12px] text-xl text-gray-600" />
+        <div className=" h-[33px] text-3xl md:flex items-center gap-4 text-white hidden">
+          <Link
+            href={"/"}
+            className="flex gap-3 items-center navberOptions"
+          >
+            <span>Home</span> <FaHome />
+          </Link>
+
+          <Link
+            href={"/"}
+            className="flex gap-3 items-center navberOptions"
+          >
+            <span>Studio</span> <SiYoutubestudio />
+          </Link>
+
+          <Link
+            href={"/"}
+            className="flex gap-3 items-center navberOptions"
+          >
+            <span>Dark</span> <BsBrightnessHighFill />
+          </Link>
         </div>
-        <span className="w-[177px] h-[33px] text-3xl lg:flex items-center gap-4 text-white hidden ">
-          <CiHeart />
-          <IoPerson />
-          <FaCartShopping />
-        </span>
-        <span className="lg:hidden block text-3xl"  onClick={() => {
-    gsap.to(".menudiv", { right: 0, duration:0.5,display:"flex"  });
-    gsap.from(".navLink",{x:100,duration:1,stagger:0.3 ,opacity:0})
-  }}>
+        <span className="lg:hidden block text-3xl" onClick={handleMenuOpen}>
           <CgMenuRightAlt />
         </span>
       </header>
 
-      <div className="menudiv w-full flex flex-col justify-center items-center z-50">
-      <div className="w-full relative">
+      <div
+        ref={menuDivRef}
+        className="menudiv fixed top-0 right-[-100%] h-full w-full bg-white flex flex-col justify-center items-center z-50"
+      >
+        <div className="w-full relative">
           <FaWindowClose
             className="text-black absolute top-[-11rem] left-[2rem] rounded-lg text-2xl"
-            onClick={() => {
-              gsap.to(".menudiv", { right: "-80%", duration:0.5,display:"none" })
-            }}
+            onClick={handleMenuClose}
+            aria-label="Close menu"
           />
         </div>
-        <nav className="flex flex-col mx-auto gap-3 text-3xl item-start h-[30%] text-black">
-          <Link href={'/'} className="flex gap-3 items-center border-b-2 border-gray-300 navLink">
-            <span>Favourite</span> <CiHeart />
+        <nav className="flex flex-col mx-auto gap-3 text-3xl items-start h-[30%] text-black">
+          <Link
+            href={"/"}
+            onClick={handleMenuClose}
+            className="flex gap-3 items-center border-b-2 border-gray-300 navLink"
+          >
+            <span>Home</span> <FaHome />
           </Link>
-          <Link href={'/'} className="flex gap-3 items-center border-b-2 border-gray-300 navLink">
-            <span>Account</span> <IoPerson />
+
+          <Link
+            href={"/"}
+            onClick={handleMenuClose}
+            className="flex gap-3 items-center border-b-2 border-gray-300 navLink"
+          >
+            <span>Studio</span> <SiYoutubestudio />
           </Link>
-          <Link href={'/'} className="flex gap-3 items-center border-b-2 border-gray-300 navLink">
-            <span>Special Offers</span> <FaCartShopping />
-          </Link>
-          <Link href={'/'} className="flex gap-3 items-center border-b-2 border-gray-300 navLink">
-            <span>Search</span> <IoSearchSharp />
-          </Link>
+          <div
+            onClick={handleMenuClose}
+            className="flex gap-3 items-center border-b-2 border-gray-300 navLink"
+          >
+            <span>Dark</span> <BsBrightnessHighFill />
+          </div>
         </nav>
       </div>
     </>

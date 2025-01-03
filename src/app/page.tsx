@@ -1,4 +1,5 @@
 import BlogCard from "@/components/BlogCard";
+import { Navbar } from "@/components/Navbar";
 import { client } from "@/sanity/lib/client";
 
 export const revalidate = 60; // seconds to revalidate the page data
@@ -34,7 +35,9 @@ export default async function Home() {
   const posts: Post[] = await client.fetch(query); // Use Post[] type here
 
   return (
-    <main className="container mx-auto flex min-h-screen flex-col">
+    <>
+    <Navbar />
+    <main className="container px-3 mx-auto flex min-h-screen flex-col">
       <h1 className="text-2xl font-bold uppercase my-12 text-center text-dark dark:text-light sm:text-3xl lg:text-5xl">
         Most Recent Blogs
       </h1>
@@ -44,5 +47,6 @@ export default async function Home() {
         ))}
       </section>
     </main>
+    </>
   );
 }
