@@ -1,15 +1,13 @@
 "use client";
 
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import gsap from "gsap";
-import { IoSearchSharp, IoPerson } from "react-icons/io5";
-import { CiHeart } from "react-icons/ci";
 import { FaHome, FaWindowClose } from "react-icons/fa";
 import { CgMenuRightAlt } from "react-icons/cg";
 import Link from "next/link";
-import { FaCartShopping } from "react-icons/fa6";
 import { SiYoutubestudio } from "react-icons/si";
 import { BsBrightnessHighFill } from "react-icons/bs";
+import ThemeToggle from "./ThemeToggle";
 
 export const Navbar = () => {
   const menuDivRef = useRef<HTMLDivElement | null>(null);
@@ -44,7 +42,7 @@ export const Navbar = () => {
           DailyTechThoughts
         </h1>
 
-        <div className=" h-[33px] text-3xl md:flex items-center gap-4 text-white hidden">
+        <div className=" h-[33px] text-2xl md:flex items-center gap-4 text-white hidden">
           <Link
             href={"/"}
             className="flex gap-3 items-center navberOptions"
@@ -59,12 +57,11 @@ export const Navbar = () => {
             <span>Studio</span> <SiYoutubestudio />
           </Link>
 
-          <Link
-            href={"/"}
+          <div
             className="flex gap-3 items-center navberOptions"
           >
-            <span>Dark</span> <BsBrightnessHighFill />
-          </Link>
+            <ThemeToggle />
+          </div>
         </div>
         <span className="lg:hidden block text-3xl" onClick={handleMenuOpen}>
           <CgMenuRightAlt />
@@ -102,7 +99,8 @@ export const Navbar = () => {
             onClick={handleMenuClose}
             className="flex gap-3 items-center border-b-2 border-gray-300 navLink"
           >
-            <span>Dark</span> <BsBrightnessHighFill />
+            <span>Theme</span>   <ThemeToggle />
+
           </div>
         </nav>
       </div>
