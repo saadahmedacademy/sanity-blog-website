@@ -27,5 +27,19 @@ export const authorSchema = defineType({
                 hotspot: true,
             }
         }),
+        defineField({
+            title: 'Password',
+            name: 'password',
+            type: 'string',
+            description: 'Set the author’s password (hashing should be applied externally).',
+            validation: (Rule) => Rule.required().min(8).error('Password must be at least 8 characters long.'),
+          }),
+        defineField({
+            title: 'Author Email',
+            name: 'email',
+            type: 'string',
+            description: 'Email of the author',
+            validation: (Rule) => Rule.required().error('Author email is required'),
+        }),
     ]
 });

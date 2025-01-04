@@ -51,7 +51,7 @@ export const Navbar = () => {
           </Link>
 
           <Link
-            href={"/"}
+            href={"/auth-validation"}
             className="flex gap-3 items-center navberOptions"
           >
             <span>Studio</span> <SiYoutubestudio />
@@ -89,7 +89,7 @@ export const Navbar = () => {
           </Link>
 
           <Link
-            href={"/"}
+            href={"/auth-validation"}
             onClick={handleMenuClose}
             className="flex gap-3 items-center border-b-2 border-gray-300 navLink"
           >
