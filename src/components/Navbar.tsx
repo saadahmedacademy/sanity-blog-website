@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import gsap from "gsap";
 import { FaHome, FaWindowClose } from "react-icons/fa";
 import { CgMenuRightAlt } from "react-icons/cg";
 import Link from "next/link";
 import { SiYoutubestudio } from "react-icons/si";
-import { BsBrightnessHighFill } from "react-icons/bs";
 import ThemeToggle from "./ThemeToggle";
 
 export const Navbar = () => {

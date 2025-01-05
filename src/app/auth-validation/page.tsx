@@ -1,59 +1,74 @@
 "use client";
+
 import { client } from "@/sanity/lib/client";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { useState } from "react";
+import bcrypt from "bcryptjs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { Eye, EyeOff } from 'lucide-react';
 
-const page = () => {
-  interface ValidationData {
-    email: string;
-    password: string;
-  }
-
+const ValidationProcess = () => {
   const router = useRouter();
 
-  const [validationData, setValidationData] = useState<ValidationData>({
+  const [validationData, setValidationData] = useState({
     email: "",
     password: "",
   });
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setValidationData({
-      ...validationData,
+    setValidationData((prev) => ({
+      ...prev,
       [name]: value,
-    });
+    }));
   };
-  const query = `*[_type == "author"]{email, password}`;
 
-  const authFatchData = async () => {
-    const response = await client.fetch(query);
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
-    const matchAuthData = response.some(
-        (authData: ValidationData) =>
-          authData.email === validationData.email && authData.password === validationData.password
-      );
-      
-      if (matchAuthData) {
-        router.push('/studio');
-        toast.success("Validation Success!");
+
+  
+  const authFetchData = async () => {
+    const query = `*[_type == "author" && email == $email][0]`;
+    const params = { email: validationData.email };
+  
+    try {
+      const author = await client.fetch(query, params);
+  
+      if (author) {
+        const passwordMatch = await bcrypt.compare(validationData.password, author.hashedPassword);
+        
+        if (passwordMatch) {
+          toast.success("Validation Success!");
+          setTimeout(() => {
+            router.push("/studio");
+          }, 1500);
+        } else {
+          toast.error("Invalid password!");
+        }
       } else {
-        toast.error("Validation Failed!");
+        toast.error("Author not found!");
       }
-      
+    } catch (error) {
+      console.error("Authentication error:", error);
+      toast.error("An error occurred. Please try again.");
+    }
   };
 
-  const hangdleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    authFatchData();
+    authFetchData();
   };
 
   return (
-    <main className="min-h-screen min-w-full flex justify-center items-center ">
+    <main className="min-h-screen min-w-full flex justify-center items-center">
       <form
-        onSubmit={hangdleSubmit}
-        className="md:w-[400px] w-auto h-[300px] px-4 py-8 dark:bg-gray-800 rounded-lg  shodow-black shadow-lg flex flex-col items-center justify-evenly gap-4"
+        onSubmit={handleSubmit}
+        className="md:w-[400px] w-auto h-[320px] px-4 pb-10 pt-4 dark:bg-gray-800 rounded-lg shadow-black shadow-lg flex flex-col items-center justify-evenly gap-4"
       >
         <h1 className="text-2xl font-bold text-dark dark:text-light">
           Author Validation
@@ -74,15 +89,28 @@ const page = () => {
 
         <div className="flex flex-col gap-2 w-full">
           <label htmlFor="password">Password</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            required
-            placeholder="Enter your password"
-            className="px-2 py-2 bg-white text-black rounded-md"
-            onChange={handleChange}
-          />{" "}
+          <div className="relative">
+            <input
+              type={showPassword ? "text" : "password"}
+              id="password"
+              name="password"
+              required
+              placeholder="Enter your password"
+              className="px-2 py-2 bg-white text-black rounded-md w-full pr-10"
+              onChange={handleChange}
+            />
+            <button
+              type="button"
+              className="absolute inset-y-0 right-0 pr-3 flex items-center"
+              onClick={togglePasswordVisibility}
+            >
+              {showPassword ? (
+                <EyeOff className="h-5 w-5 text-gray-500" />
+              ) : (
+                <Eye className="h-5 w-5 text-gray-500" />
+              )}
+            </button>
+          </div>
         </div>
 
         <button
@@ -97,4 +125,5 @@ const page = () => {
   );
 };
 
-export default page;
+export default ValidationProcess;
+
