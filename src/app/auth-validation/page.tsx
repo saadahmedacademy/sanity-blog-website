@@ -3,7 +3,6 @@
 import { client } from "@/sanity/lib/client";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import bcrypt from "bcryptjs";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Eye, EyeOff } from 'lucide-react';
@@ -30,28 +29,20 @@ const ValidationProcess = () => {
     setShowPassword(!showPassword);
   };
 
-
-  
   const authFetchData = async () => {
-    const query = `*[_type == "author" && email == $email][0]`;
-    const params = { email: validationData.email };
-  
+    const query = `*[_type == "author" && email == $email && password == $password][0]`;
+    const params = { email: validationData.email, password: validationData.password };
+
     try {
-      const author = await client.fetch(query, params);
-  
-      if (author) {
-        const passwordMatch = await bcrypt.compare(validationData.password, author.hashedPassword);
-        
-        if (passwordMatch) {
-          toast.success("Validation Success!");
-          setTimeout(() => {
-            router.push("/studio");
-          }, 1500);
-        } else {
-          toast.error("Invalid password!");
-        }
+      const response = await client.fetch(query, params);
+
+      if (response) {
+        toast.success("Validation Success!");
+        setTimeout(() => {
+          router.push("/studio");
+        }, 1500); // Delay navigation to show the toast
       } else {
-        toast.error("Author not found!");
+        toast.error("Validation Failed!");
       }
     } catch (error) {
       console.error("Authentication error:", error);
