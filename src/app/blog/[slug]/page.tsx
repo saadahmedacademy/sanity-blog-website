@@ -19,18 +19,15 @@ export async function generateStaticParams() {
 }
 
 // Dynamic page for each blog post
-export default async function Page({
-  params,
-}: {
-  params: { slug: string };
-}) {
-
-  const { slug } = params;
+export default async function Page(props: { params: { slug: string } }) {
+  const { params } = props;
+  const slug = await params.slug; // Await the params to resolve properly
 
   const query = `*[_type=='post' && slug.current=="${slug}"]{
     title, summary, image, content,
     author->{bio, image, name}
   }[0]`;
+
   const post = await client.fetch(query);
 
   if (!post) {
@@ -46,7 +43,7 @@ export default async function Page({
       <Image
         src={`${urlFor(post.image)}`}
         width={600}
-        height={300}
+        height={100}
         alt={post.title}
         className="w-[90%] rounded mx-auto"
       />
@@ -89,3 +86,4 @@ export default async function Page({
     </article>
   );
 }
+

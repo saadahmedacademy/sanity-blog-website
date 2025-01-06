@@ -39,7 +39,7 @@ const ValidationProcess = () => {
       if (response) {
         toast.success("Validation Success!");
         setTimeout(() => {
-          router.push("/studio");
+          router.push("/studio/structure");
         }, 1500); // Delay navigation to show the toast
       } else {
         toast.error("Validation Failed!");
