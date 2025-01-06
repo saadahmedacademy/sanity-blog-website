@@ -41,7 +41,7 @@ export default async function Home() {
       </h1>
       <section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12">
         {posts.map((post:Post) => (
-          <BlogCard post={post} key={post.slug } />
+          <BlogCard post={post} key={post.title } />
         ))}
       </section>
     </main>

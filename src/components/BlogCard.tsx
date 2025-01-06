@@ -27,7 +27,7 @@ export default function BlogCard({post}:{post:Post}) {
 
         {/* Read More dynamic Link */}
         <Link
-          href={`/blog/${post.slug}`}
+          href={`/blog/${post.title}`}
           className="block px-4 py-1 text-center bg-orange-600 hover:bg-blue-700  rounded text-dark font-semibold mt-4"
         >
           Read More

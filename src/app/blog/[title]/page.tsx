@@ -14,15 +14,13 @@ export async function generateStaticParams() {
   }`;
   const slugs = await client.fetch(query);
   return slugs.map((item: { slug: string }) => ({
-    params: { slug: item.slug },
+     slug: item.slug 
   }));
 }
 
 // Dynamic page for each blog post
-export default async function Page(props: { params: { slug: string } }) {
-  const { params } = props;
-  const slug = await params.slug; // Await the params to resolve properly
-
+export default async function Page( { params } : { params : { slug : string } }) {
+const { slug } = params
   const query = `*[_type=='post' && slug.current=="${slug}"]{
     title, summary, image, content,
     author->{bio, image, name}
@@ -86,4 +84,3 @@ export default async function Page(props: { params: { slug: string } }) {
     </article>
   );
 }
-
