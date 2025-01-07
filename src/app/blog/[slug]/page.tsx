@@ -4,29 +4,30 @@ import { urlFor } from "@/sanity/lib/image";
 import { PortableText } from "@portabletext/react";
 import { components } from "@/components/CustomComponent";
 
-export const revalidate = 60; // Revalidation time in seconds
+export const revalidate = 60; //seconds
 
-
-// Generate static params for dynamic routes
 export async function generateStaticParams() {
   const query = `*[_type=='post']{
     "slug":slug.current
   }`;
   const slugs = await client.fetch(query);
-  return slugs.map((item: { slug: string }) => ({
-     slug: item.slug 
+   return slugs.map((item: { slug: string }) => ({
+    slug: item.slug,
   }));
+
 }
 
-// Dynamic page for each blog post
-export default async function Page( { params } : { params : { slug : string } }) {
-const { slug } = params
-  const query = `*[_type=='post' && slug.current=="${slug}"]{
-    title, summary, image, content,
-    author->{bio, image, name}
-  }[0]`;
+// To create static pages for dynamic routes
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
 
+
+  const query = `*[_type=='post' && slug.current=="${slug}"]{
+    title,summary,image,content,
+      author->{bio,image,name}
+  }[0]`;
   const post = await client.fetch(query);
+
 
   if (!post) {
     return <p>Post not found</p>; // Handle missing post
@@ -43,7 +44,7 @@ const { slug } = params
         width={600}
         height={100}
         alt={post.title}
-        className="w-[90%] rounded mx-auto"
+        className="w-[90%] h-[600px] mx-auto"
       />
 
       <section>
@@ -84,3 +85,4 @@ const { slug } = params
     </article>
   );
 }
+

@@ -3,24 +3,6 @@ import { client } from "@/sanity/lib/client";
 
 export const revalidate = 60; // seconds to revalidate the page data
 
-// Define Post type
-export interface Post {
-  title: string;
-  slug: string;
-  summary: string;
-  image: {
-    _type: "image";
-    asset: {
-      _ref: string;
-      _type: "reference";
-    };
-  }; 
-  content: string;
-  author: {
-    _ref: string;
-    _type: "reference";
-  }; 
-}
 
 export default async function Home() {
   const query = `*[_type=="post"] | order(_createdAt asc) {
